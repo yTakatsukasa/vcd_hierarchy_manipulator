@@ -1,6 +1,7 @@
 #include <cassert>
 #include <iostream>
 #include <iomanip>
+#include <algorithm>
 #include "vcd_header.h"
 
 namespace{
@@ -60,7 +61,25 @@ std::vector<char> & operator << (std::vector<char> &v, const char *s){
     return v;
 }
 
+std::vector<char> & output_full_path(std::vector<char> &dst, const vcd_signal &sig){
+    std::vector<const vcd_module *> stack;
+    for(const vcd_module *m = sig.get_parent(); m; m = m->get_parent()){
+        stack.push_back(m);
+    }
+    stack.pop_back();
+    while(!stack.empty()){
+        dst << stack.back()->get_name();
+        dst.push_back('.');
+        stack.pop_back();
+    }
+    return dst << sig.get_name();
+}
 
+struct sort_by_symbol{
+    bool operator () (const vcd_signal *a, const vcd_signal *b)const{
+        return a->get_symbol() < b->get_symbol();
+    }
+};
 
 } //end of unnamed namespace
 
@@ -226,6 +245,10 @@ void vcd_signal::dump(std::ostream &os, int level)const{
         << '\n';
 }
 
+const vcd_module * vcd_signal::get_parent()const{
+    return parent;
+}
+
 vcd_module::vcd_module(const string_view &name, const vcd_module *parent) : parent(parent), name(name){}
 
 vcd_module::vcd_module(string_view &header_str, const string_view &name_arg, vcd_module *parent) : parent(parent){
@@ -346,6 +369,40 @@ void vcd_module::to_str(std::vector<char> &dst, int size_level, int level)const{
         << "$upscope $end\n";
 }
 
+void vcd_module::collect_signals(std::vector<const vcd_signal *> &sigs)const{
+    for(sig_const_it i = signals.begin(), end = signals.end(); i != end; ++i){
+        sigs.push_back(i->second);
+    }
+    for(mod_const_it i = sub_modules.begin(), end = sub_modules.end(); i != end; ++i){
+        i->second->collect_signals(sigs);
+    }
+}
+
+void vcd_module::flatten(std::vector<char> &dst, int size_level)const{
+    assert(!parent);
+    std::vector<const vcd_signal *> sigs;
+    collect_signals(sigs);
+    std::sort(sigs.begin(), sigs.end(), sort_by_symbol());
+
+    dst << "$scope module " << name << " $end\n";
+    for(std::vector<const vcd_signal *>::const_iterator i = sigs.begin(), end = sigs.end(); i != end; ++i){
+        const vcd_signal &sig = **i;
+        dst 
+            << "$var wire " << sig.get_width()
+            << " " << sig.get_symbol()
+            << " ";
+        output_full_path(dst, sig)
+            << " $end\n";
+    }
+    dst
+        << "$upscope $end\n";
+}
+
+const vcd_module * vcd_module::get_parent()const{
+    return parent;
+}
+
+
 vcd_header::vcd_header(string_view &header_str){
     struct{
         const char *const str;
@@ -433,6 +490,24 @@ void vcd_header::to_str(std::vector<char> &dst, int level)const{
     }
     for(mod_const_it i = top_modules.begin(), end = top_modules.end(); i != end; ++i){
         i->second->to_str(dst, level, 1);
+    }
+    dst << "$enddefinitions $end\n";
+    if(level < 1){
+        if(level <= 0) dst << "\n";
+        dst << "$comment\n" << comment << "\n$end\n";
+    }
+}
+void vcd_header::flatten(std::vector<char> &dst, int level)const{
+    if(level < 1){
+        dst << "$date\n" << date << "\n$end\n";
+        if(level <= 0) dst << "\n";
+        dst << "$version\n" << version << "\n$end\n";
+        if(level <= 0) dst << "\n";
+        dst << "$timescale\n" << timescale << "\n$end\n";
+        if(level <= 0) dst << "\n";
+    }
+    for(mod_const_it i = top_modules.begin(), end = top_modules.end(); i != end; ++i){
+        i->second->flatten(dst, level);
     }
     dst << "$enddefinitions $end\n";
     if(level < 1){

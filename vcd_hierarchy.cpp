@@ -38,6 +38,50 @@ struct fp_raii{
     operator std::FILE *()const{return fp;}
 };
 
+int make_new_file_and_write(const char *orig_vcd, const char *output_file, const std::vector<char> &v, size_t header_size){
+    fp_raii ofp(std::fopen(output_file, "w"));
+    if(!ofp){
+        perror(output_file);
+        return -1;
+    }
+    fp_raii ifp(std::fopen(orig_vcd, "r"));
+    if(!ifp){
+        perror(orig_vcd);
+        return -1;
+    }
+    for(size_t written = 0; written < v.size(); ){
+        written += std::fwrite(&v.front() + written, 1, v.size() - written, ofp);
+    }
+    std::vector<unsigned char> buf(1024 * 1024);
+    if(std::fseek(ifp, header_size, SEEK_SET)){
+        perror(orig_vcd);
+        return -1;
+    }
+    while(!std::feof(ifp)){
+        size_t copied;
+        for(copied = 0; copied < buf.size() && !std::feof(ifp); ){
+            copied += std::fread(&buf.front() + copied, 1, buf.size() - copied, ifp);
+        }
+        for(size_t written = 0; written < copied; ){
+            written += std::fwrite(&buf.front() + written, 1, copied - written, ofp);
+        }
+    }
+    return 0;
+
+}
+int inplace_mod(void *dst, const std::vector<char> &v_, size_t header_size){
+    std::vector<char> v = v_;
+    const unsigned int fill_unit = 80;
+    for(size_t cur = v.size(); cur < header_size; cur += fill_unit + 1){
+        const unsigned int fill_size = std::min<unsigned int>(fill_unit + 1, header_size - cur);
+        v.insert(v.end(), fill_size - 1, ' ');
+        if(fill_size) v.push_back('\n');
+    }
+    assert(header_size == v.size());
+    std::memcpy(dst, &v.front(), v.size());
+    return 0;
+}
+ 
 } //end of unnamed namespace
 
 int main(int argc, char *argv[]){
@@ -77,57 +121,37 @@ int main(int argc, char *argv[]){
     string_view all(static_cast<const char *>(vcd_file.get_ptr()), vcd_file.get_size());
     vcd_header *const orig = parse_vcd_header(all);
     //orig->dump(std::cout);
-    vcd_header *const hier = orig->make_hierarchy();
-    //hier->dump(std::cout);
-    for(int level = 0; level < 1; ++level){
-        std::vector<char> v;
-        hier->to_str(v, level);
-        std::cerr << "Header size " << std::dec << header_size << " -> " << v.size() << std::endl;
-        if(!output_file.empty()){
-            fp_raii ofp(std::fopen(output_file.c_str(), "w"));
-            if(!ofp){
-                perror(output_file.c_str());
-                return -1;
+    if(flatten){
+        for(int level = 0; level < 1; ++level){
+            std::vector<char> v;
+            orig->flatten(v, level);
+            std::cerr << "Header size " << std::dec << header_size << " -> " << v.size() << std::endl;
+            if(!output_file.empty()){
+                return make_new_file_and_write(vcd_filename, output_file.c_str(), v, header_size);
             }
-            fp_raii ifp(std::fopen(vcd_filename, "r"));
-            if(!ifp){
-                perror(vcd_filename);
-                return -1;
+            else if(v.size() <= header_size){
+                return inplace_mod(vcd_file.get_ptr(), v, header_size);
             }
-            for(size_t written = 0; written < v.size(); ){
-                written += std::fwrite(&v.front() + written, 1, v.size() - written, ofp);
-            }
-            std::vector<unsigned char> buf(1024 * 1024);
-            if(std::fseek(ifp, header_size, SEEK_SET)){
-                perror(vcd_filename);
-                return -1;
-            }
-            while(!std::feof(ifp)){
-                size_t copied;
-                for(copied = 0; copied < buf.size() && !std::feof(ifp); ){
-                    copied += std::fread(&buf.front() + copied, 1, buf.size() - copied, ifp);
-                }
-                for(size_t written = 0; written < copied; ){
-                    written += std::fwrite(&buf.front() + written, 1, copied - written, ofp);
-                }
-
-            }
-            return 0;
         }
-        else if(v.size() <= header_size){
-            const unsigned int fill_unit = 80;
-            for(size_t cur = v.size(); cur < header_size; cur += fill_unit + 1){
-                const unsigned int fill_size = std::min<unsigned int>(fill_unit + 1, header_size - cur);
-                v.insert(v.end(), fill_size - 1, ' ');
-                if(fill_size) v.push_back('\n');
+ 
+    }
+    else{
+        vcd_header *const hier = orig->make_hierarchy();
+        //hier->dump(std::cout);
+        for(int level = 0; level < 1; ++level){
+            std::vector<char> v;
+            hier->to_str(v, level);
+            std::cerr << "Header size " << std::dec << header_size << " -> " << v.size() << std::endl;
+            if(!output_file.empty()){
+                return make_new_file_and_write(vcd_filename, output_file.c_str(), v, header_size);
             }
-            assert(header_size == v.size());
-            std::memcpy(vcd_file.get_ptr(), &v.front(), v.size());
-            return 0;
+            else if(v.size() <= header_size){
+                return inplace_mod(vcd_file.get_ptr(), v, header_size);
+            }
         }
     }
     std::cerr
         << "Could not complete. Because modified header cannot be smaller than the original one.\n"
-       << "Please add --output option" << std::endl;
+        << "Please add --output option" << std::endl;
     return 0;
 }

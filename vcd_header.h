@@ -46,6 +46,7 @@ class vcd_signal{
     void set_name(const string_view &);
     void set_parent(const vcd_module *);
     void dump(std::ostream &, int)const;
+    const vcd_module *get_parent()const;
 };
 
 class vcd_module{
@@ -62,6 +63,7 @@ class vcd_module{
     vcd_module(const string_view &, const vcd_module *);
     void make_hierarchy_internal();
     vcd_signal & add_signal(const string_view &name, const string_view &widh, const string_view &symbol);
+    void collect_signals(std::vector<const vcd_signal *> &)const;
     public:
     vcd_module(string_view &, const string_view &, vcd_module *);
     ~vcd_module();
@@ -69,6 +71,8 @@ class vcd_module{
     vcd_module *make_hierarchy()const;
     void dump(std::ostream &, int)const;
     void to_str(std::vector<char> &, int, int)const;
+    void flatten(std::vector<char> &, int)const;
+    const vcd_module *get_parent()const;
 };
 
 class vcd_header{
@@ -88,6 +92,7 @@ class vcd_header{
     vcd_header *flatten()const;
     void dump(std::ostream &)const;
     void to_str(std::vector<char> &, int)const;
+    void flatten(std::vector<char> &, int)const;
 };
 
 vcd_header * parse_vcd_header(const string_view &);
