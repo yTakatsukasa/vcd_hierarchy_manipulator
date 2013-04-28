@@ -55,7 +55,7 @@ class vcd_module{
     typedef std::map<string_view, vcd_signal *> sig_map_type;
     typedef sig_map_type::iterator sig_it;
     typedef sig_map_type::const_iterator sig_const_it;
-    const vcd_module *const parent;
+    const vcd_module *parent;
     string_view name;
     sig_map_type signals;
     mod_map_type sub_modules;
@@ -85,6 +85,7 @@ class vcd_header{
     explicit vcd_header(string_view &);
     ~vcd_header();
     vcd_header *make_hierarchy()const;
+    vcd_header *flatten()const;
     void dump(std::ostream &)const;
     void to_str(std::vector<char> &, int)const;
 };

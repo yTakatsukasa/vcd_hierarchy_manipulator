@@ -8,7 +8,7 @@ const char *const seperator = " \t\n";
 
 
 string_view get_tok(const string_view &str, size_t offset, const char *sep){
-    assert(offset <= str.size());
+    //assert(offset <= str.size());
     const char *start = NULL;
     for(size_t idx = offset, end = str.size(); idx < end; ++idx){
         const char *s;
@@ -297,11 +297,13 @@ const string_view & vcd_module::get_name()const{
 }
 
 vcd_module * vcd_module::make_hierarchy()const{
-    assert(sub_modules.empty());
-    assert(!parent);
     vcd_module *const new_mod = new vcd_module(*this);
     new_mod->signals.clear();
     new_mod->sub_modules.clear();
+    for(mod_const_it i = sub_modules.begin(), end = sub_modules.end(); i != end; ++i){
+        new_mod->sub_modules[i->second->get_name()] =  i->second->make_hierarchy();
+        new_mod->sub_modules[i->second->get_name()]->parent = new_mod;
+    }
     for(sig_const_it i = signals.begin(), end = signals.end(); i != end; ++i){
         new_mod->add_signal(i->second->get_name(), i->second->get_width(), i->second->get_symbol());
     }
@@ -421,16 +423,20 @@ void vcd_header::dump(std::ostream &os)const{
 }
 
 void vcd_header::to_str(std::vector<char> &dst, int level)const{
-    dst << "$date\n" << date << "\n$end\n";
-    if(level <= 0) dst << "\n";
-    dst << "$version\n" << version << "\n$end\n";
-    if(level <= 0) dst << "\n";
-    dst << "$timescale\n" << timescale << "\n$end\n";
-    if(level <= 0) dst << "\n";
+    if(level < 1){
+        dst << "$date\n" << date << "\n$end\n";
+        if(level <= 0) dst << "\n";
+        dst << "$version\n" << version << "\n$end\n";
+        if(level <= 0) dst << "\n";
+        dst << "$timescale\n" << timescale << "\n$end\n";
+        if(level <= 0) dst << "\n";
+    }
     for(mod_const_it i = top_modules.begin(), end = top_modules.end(); i != end; ++i){
         i->second->to_str(dst, level, 1);
     }
     dst << "$enddefinitions $end\n";
-    if(level <= 0) dst << "\n";
-    dst << "$comment\n" << comment << "\n$end\n";
+    if(level < 1){
+        if(level <= 0) dst << "\n";
+        dst << "$comment\n" << comment << "\n$end\n";
+    }
 }
