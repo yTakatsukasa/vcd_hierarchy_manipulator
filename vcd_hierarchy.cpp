@@ -112,7 +112,7 @@ int main(int argc, char *argv[]){
                 }
 
             }
-            break;
+            return 0;
         }
         else if(v.size() <= header_size){
             const unsigned int fill_unit = 80;
@@ -123,8 +123,11 @@ int main(int argc, char *argv[]){
             }
             assert(header_size == v.size());
             std::memcpy(vcd_file.get_ptr(), &v.front(), v.size());
-            break;
+            return 0;
         }
     }
+    std::cerr
+        << "Could not complete. Because modified header cannot be smaller than the original one.\n"
+       << "Please add --output option" << std::endl;
     return 0;
 }
