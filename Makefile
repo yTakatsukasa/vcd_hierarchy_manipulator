@@ -41,7 +41,7 @@ vpath %.cpp $(SRC_DIRS)
 vpath %.c $(SRC_DIRS)
 
 
-run.x:$(OBJS)
+vcd_hier_manip.x:$(OBJS)
 	@echo Linking $@ $(SHOW_MSG)
 	$(SHOW_CMD_LINE) $(CXX) -o $@ $^ $(LDFLAGS)
 
