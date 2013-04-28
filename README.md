@@ -34,6 +34,8 @@ This option makes this tool much slower because it reads and writes whole VCD.
 
 % ./vcd_hier_manip.x input.vcd --output output.vcd
 
+Option --flatten provides reverse modification.
+
 4) License
 
 This program is written by Yutestu TAKATSUKASA.
