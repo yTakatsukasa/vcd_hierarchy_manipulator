@@ -14,3 +14,6 @@ vcd_hier_manip
 *.lai
 *.la
 *.a
+
+#doxygen
+html
