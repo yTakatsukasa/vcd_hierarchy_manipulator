@@ -8,11 +8,11 @@ CPP					?= cpp
 CPPFLAGS			:= $(addprefix -I,$(INCLUDE_DIRS))
 ifeq ($(DEBUG),1)
 DEBUGGER_CMD		:= gdb --args
-CXXFLAGS			:= -g3 -O0 -Wall 
+CXXFLAGS			:= -MD -g3 -O0 -Wall
 V					:= 1
 else
 DEBUGGER_CMD		:=
-CXXFLAGS			:= -O3 -Wall -march=nocona -fomit-frame-pointer
+CXXFLAGS			:= -MD -O3 -Wall -march=nocona -fomit-frame-pointer
 endif
 CFLAGS				:= $(CXXFLAGS)
 LIB_DIRS			:=
@@ -41,7 +41,7 @@ vpath %.cpp $(SRC_DIRS)
 vpath %.c $(SRC_DIRS)
 
 
-vcd_hier_manip.x:$(OBJS)
+vcd_hier_manip:$(OBJS)
 	@echo Linking $@ $(SHOW_MSG)
 	$(SHOW_CMD_LINE) $(CXX) -o $@ $^ $(LDFLAGS)
 
@@ -49,13 +49,7 @@ vcd_hier_manip.x:$(OBJS)
 	@echo Compiling $< $(SHOW_MSG)
 	$(SHOW_CMD_LINE) $(CXX)	$(CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
-.%.d:%.cpp
-	@echo Generating dependency list of $< $(SHOW_MSG)
-	@echo -n "$@ ." > $@
-	$(SHOW_CMD_LINE) $(CPP) $(CPPFLAGS) $< -MM >> $@ ||  rm -f $@ || /bin/false
-
 clean:
-	rm -f .*.[do] *.x .*.*target transcript vsim.wlf
-	rm -rf work verilated
+	rm -f .*.[do] vcd_hier_manip
 
 -include $(addsuffix .d,$(basename $(OBJS)))

@@ -17,13 +17,13 @@ This program modifies header of VCD in-place. Only 1KB-100KB is read and written
 
 All you need to do is just type make.
 % make
-You will find vcd_hier_manip.x which is executable.
+You will find vcd_hier_manip which is executable.
 
 I tested on Linux.
 
 3) How to use
 
-% ./vcd_hier_manip.x dump.vcd
+% ./vcd_hier_manip dump.vcd
 
 This program modifies dump.vcd. Please backup the original VCD if the file is important.
 
@@ -32,7 +32,7 @@ the original header size.
 In that case, use --output option to specify the output file.
 This option makes this tool much slower because it reads and writes whole VCD.
 
-% ./vcd_hier_manip.x input.vcd --output output.vcd
+% ./vcd_hier_manip input.vcd --output output.vcd
 
 Option --flatten provides reverse modification.
 
