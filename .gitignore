@@ -4,6 +4,7 @@
 *.o
 *.d
 *.x
+vcd_hier_manip
 
 # Compiled Dynamic libraries
 *.so
