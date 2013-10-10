@@ -7,7 +7,12 @@
 namespace{
 const char *const seperator = " \t\n";
 
-
+//! cut-out the token from str seperated by one of sep
+//
+//! @param str string to be seperated
+//! @param offset start point of returned sub-string
+//! @param sep null terminated string. one of sep is used as a delimiter.
+//! @return sub string of str, not include delimiter
 string_view get_tok(const string_view &str, size_t offset, const char *sep){
     //assert(offset <= str.size());
     const char *start = NULL;
@@ -30,10 +35,19 @@ string_view get_tok(const string_view &str, size_t offset, const char *sep){
 
 }
 
+//! cut out 1 line from str
+//
+//! @param str string to be cut
+//! @param offset start of returned string
+//! @return 1 line of string
 string_view get_line(const string_view &str, size_t offset){
     return get_tok(str, offset, "\n");
 }
 
+//! cut the begining whitespaces of s
+//
+//! @param s string to check
+//! @return part of s which starts with non-whitespace character
 string_view skip_begging_blank(const string_view &s){
     for(size_t i = 0; i < s.size(); ++i){
         if(s[i] != ' ') return string_view(&s[i], s.size() - i);
@@ -41,26 +55,58 @@ string_view skip_begging_blank(const string_view &s){
     return string_view(&s[0] + s.size(), 0);
 }
 
+//! indent
 struct indent{
+    //! depth of indent
     const int i;
+    //! character to be used for indent (usually ' ' or '\t')
     const char c;
+    //! constructor indent character is tab('\t')
+    //
+    //! @param i depth of the indent
     explicit indent(int i) : i(i), c('\t'){}
+    //! constructor
+    //
+    //! @param i depth of the indent
+    //! @param c indent character
     indent(int i, char c) : i(i), c(c){}
 };
 
+//! append an indent to the end of string (vector of character)
+//
+//! @param v string to be appended to
+//! @param i indent to be appended
+//! @return modified string (==v)
 std::vector<char> & operator << (std::vector<char> &v, const indent &i){
     v.insert(v.end(), i.i, i.c);
     return v;
 }
+
+//! append a string to the end of string (vector of character)
+//
+//! @param v string to be appended to
+//! @param s string to be appended
+//! @return modified string (==v)
 std::vector<char> & operator << (std::vector<char> &v, const string_view &s){
     v.insert(v.end(), &s[0], &s[0] + s.size());
     return v;
 }
+
+//! append a null-terminated string to the end of string (vector of character)
+//
+//! @param v string to be appended to
+//! @param s string to be appended
+//! @return modified string (==v)
 std::vector<char> & operator << (std::vector<char> &v, const char *s){
     while(*s != '\0') v.push_back(*(s++));
     return v;
 }
 
+//! append the full path of signal to the string (vector of character)
+//
+//! @param dst string to be appended to
+//! @param sig reference of signal whose path will be appended
+//! @return modified string (==dst)
 std::vector<char> & output_full_path(std::vector<char> &dst, const vcd_signal &sig){
     std::vector<const vcd_module *> stack;
     for(const vcd_module *m = sig.get_parent(); m; m = m->get_parent()){
@@ -75,6 +121,7 @@ std::vector<char> & output_full_path(std::vector<char> &dst, const vcd_signal &s
     return dst << sig.get_name();
 }
 
+//! fanctor used to sort signals by their symbol in VCD
 struct sort_by_symbol{
     bool operator () (const vcd_signal *a, const vcd_signal *b)const{
         return a->get_symbol() < b->get_symbol();
@@ -83,14 +130,27 @@ struct sort_by_symbol{
 
 } //end of unnamed namespace
 
+//! constructor
+//
+//! @param s start pointer of memory fragment
+//! @param l length of the fragment
 string_view::string_view(const char *s, size_t l) : ptr(s), len(l){}
 
+//! default constructor (constructs empty string)
 string_view::string_view() : ptr(NULL), len(0){}
+
+//! access n'th element
+//
+//! @param idx offset from the start of the string
+//! @return reference of the element
 const char & string_view::operator[] (size_t idx)const{
     assert(idx < len);
     return ptr[idx];
 }
 
+//! get the length of the string
+//
+//! @return length in byte
 size_t string_view::size()const{
     return len;
 }
@@ -104,6 +164,9 @@ string_view & string_view::operator << (const string_view &other){
 */
 
 
+//! get the pair of key field and its value in VCD header
+//
+//! @return pair of key,value
 string_view::param_pair_t string_view::get_param(){
     string_view key;
     const char *val_start = NULL;
@@ -134,6 +197,9 @@ string_view::param_pair_t string_view::get_param(){
     return param_pair_t();
 }
 
+//! remove the trailing ' ', '\t' and '\n'
+//
+//! @return remaining part of the string
 string_view string_view::chomp()const{
     for(const char *c= ptr + len - 1; c >= ptr; --c){
         bool found = false;
@@ -150,6 +216,11 @@ string_view string_view::chomp()const{
     return string_view(ptr, 0);
 }
 
+//! output the string_view to the stream
+//
+//! @param os output stream
+//! @param str string to be output
+//! @return output stream (==os)
 std::ostream & operator << (std::ostream &os, const string_view &str){
     for(size_t i = 0; i < str.size(); ++i){
         os << str[i];
@@ -157,10 +228,22 @@ std::ostream & operator << (std::ostream &os, const string_view &str){
     return os;
 }
 
+//! output the parameter pair to the stream
+//
+//! @param os output stream
+//! @param p parameter pair to be output
+//! @return output stream (==os)
 std::ostream & operator << (std::ostream &os, const string_view::param_pair_t &p){
     return os << "key:" << p.first << " val:'" << p.second << '\'';
 }
 
+//! compare null-terminated string and string_view
+//
+//! @param a null-terminated string
+//! @param b string_view
+//! @return the result of comparison
+//! @arg true a and b are equivalent
+//! @arg false a and b have differences
 bool operator == (const char *a, const string_view &b){
     size_t idx; 
     for(idx = 0; idx < b.size(); ++idx){
@@ -169,19 +252,45 @@ bool operator == (const char *a, const string_view &b){
     return a[idx] == '\0';
 }
 
+//! compare string_view and null-terminated string
+//
+//! @param a string_view
+//! @param b null-terminated string
+//! @return the result of comparison
+//! @arg true a and b are equivalent
+//! @arg false a and b have differences
 bool operator == (const string_view &a, const char *b){
     return b == a;
 }
 
 
+//! compare null-terminated string and string_view
+//
+//! @param a null-terminated string
+//! @param b string_view
+//! @return the result of comparison
+//! @arg true a and b have differences
+//! @arg false a and b are equivalent
 bool operator != (const char *a, const string_view &b){
     return !(a == b);
 }
 
+//! compare string_view and null-terminated string
+//
+//! @param a string_view
+//! @param b null-terminated string
+//! @return the result of comparison
+//! @arg false a and b are equivalent
+//! @arg true a and b have differences
 bool operator != (const string_view &a, const char *b){
     return b != a;
 }
 
+//! compare string_views used in map<string_view, T>
+//
+//! @param a string_view
+//! @param b string_view
+//! @return the result of comparison
 bool operator < (const string_view &a, const string_view &b){
     for(size_t i = 0; i < std::min(a.size(), b.size()); ++i){
         if(a[i] != b[i]) return a[i] < b[i];
@@ -189,6 +298,7 @@ bool operator < (const string_view &a, const string_view &b){
     return a.size() < b.size();
 }
 
+//! constructor
 vcd_signal::vcd_signal(const string_view &info, const vcd_module *parent) : parent(parent){
 
     int depth = 0;

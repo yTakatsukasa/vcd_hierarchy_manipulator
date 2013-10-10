@@ -1,6 +1,7 @@
 #ifndef MMAP_MANAGER_H
 #define MMAP_MANAGER_H
 
+//! Manages the memory mapped file
 class mmap_manager{
     struct impl;
     impl *pimpl;
