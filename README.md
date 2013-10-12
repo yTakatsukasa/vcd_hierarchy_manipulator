@@ -47,13 +47,18 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
-This program is licensed under GPL2.
+This program is released under GPL2 in general.
+If you download this program from Accellera Uploads area, the license is Apache license.
 
 5) Bugs
 
 This program does not support the complete specification of VCD.
 I tested only with SystemC 2.2 and 2.3.
-If you find problem, please feel free to send comments or patches.
+If you find any problem, please feel free to send comments or patches.
 It will be helpful if you send me a header of VCD to fix bugs.
 (Only header part is sufficient)
 
+If you kindly give some feedback,
+please post to https://github.com/yTakatsukasa/vcd_hierarchy_manipulator/issues.
+
+The latest version is always available at https://github.com/yTakatsukasa/vcd_hierarchy_manipulator
