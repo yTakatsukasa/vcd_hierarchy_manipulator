@@ -5,11 +5,11 @@
 #include "vcd_header.h"
 
 namespace{
-const char *const seperator = " \t\n";
+const char *const separator = " \t\n";
 
-//! cut-out the token from str seperated by one of sep
+//! cut-out the token from str separated by one of sep
 //
-//! @param str string to be seperated
+//! @param str string to be separated
 //! @param offset start point of returned sub-string
 //! @param sep null terminated string. one of sep is used as a delimiter.
 //! @return sub string of str, not include delimiter
@@ -130,6 +130,9 @@ struct sort_by_symbol{
 
 } //end of unnamed namespace
 
+
+// ********** string_view **********
+
 //! constructor
 //
 //! @param s start pointer of memory fragment
@@ -172,7 +175,7 @@ string_view::param_pair_t string_view::get_param(){
     const char *val_start = NULL;
     size_t val_len = 0;
 
-    for(string_view tok = get_tok(*this, 0, seperator); tok.size(); tok = get_tok(*this, tok.ptr - this->ptr + tok.size(), seperator)){
+    for(string_view tok = get_tok(*this, 0, separator); tok.size(); tok = get_tok(*this, tok.ptr - this->ptr + tok.size(), separator)){
         if(tok[0] == '$'){
             if(!key.size()){
                 assert(tok != "$end");
@@ -203,7 +206,7 @@ string_view::param_pair_t string_view::get_param(){
 string_view string_view::chomp()const{
     for(const char *c= ptr + len - 1; c >= ptr; --c){
         bool found = false;
-        for(const char *s = seperator; *s != '\0'; ++s){
+        for(const char *s = separator; *s != '\0'; ++s){
             if(*s == *c){
                 found = true;
                 break;
@@ -298,15 +301,21 @@ bool operator < (const string_view &a, const string_view &b){
     return a.size() < b.size();
 }
 
-//! constructor
+// ********** vcd_signal **********
+
+//! constructor using string
+//
+//! @param info string that contains wire or real
+//! @param parent parent module
 vcd_signal::vcd_signal(const string_view &info, const vcd_module *parent) : parent(parent){
 
     int depth = 0;
     const char *name_start = NULL;
-    for(string_view tok = get_tok(info, 0, seperator); tok.size(); tok = get_tok(info, &tok[0] - &info[0] + tok.size(), seperator)){
+    for(string_view tok = get_tok(info, 0, separator); tok.size(); tok = get_tok(info, &tok[0] - &info[0] + tok.size(), separator)){
         switch(depth++){
             case 0:
-                assert(tok == "wire");
+                is_wire = (tok == "wire");
+                assert(is_wire || tok == "real");
                 break;
             case 1:
                 width = tok;
@@ -325,46 +334,69 @@ vcd_signal::vcd_signal(const string_view &info, const vcd_module *parent) : pare
 //    std::cerr << "Signal '" << name << "' is created" << std::endl;
 }
 
-vcd_signal::vcd_signal(const string_view &name, const string_view &width, const string_view &symbol, vcd_module *parent) : parent(parent), width(width), symbol(symbol), name(name)
-{
-}
+//! get name of signal
 const string_view & vcd_signal::get_name()const{
     return name;
 }
+
+//! get symbol in VCD
 const string_view & vcd_signal::get_symbol()const{
     return symbol;
 }
+
+//! get bit width of signal
 const string_view & vcd_signal::get_width()const{
     return width;
 }
 
+//! set the name of this signal
 void vcd_signal::set_name(const string_view &s){
     name = s;
 }
 
+//! set the parent of this signal
 void vcd_signal::set_parent(const vcd_module *m){
     parent = m;
 }
 
+//! dump the information of this signal for debugging
+//
+//! @param os output stream
+//! @param level indent depth
 void vcd_signal::dump(std::ostream &os, int level)const{
     os
         << std::setw(level * 2) << std::setfill(' ') << ""
         << "name:\'" << name << "' "
+        << get_type_str()
         << "width:\'" << width << "' "
         << "symbol:\'" << symbol << "' "
         << '\n';
 }
 
+//! get the parent of this signal
 const vcd_module * vcd_signal::get_parent()const{
     return parent;
 }
 
+//! get string that indicates whether this signal is wire or real
+const char *vcd_signal::get_type_str()const{
+    static const char *const str[] = {"real", "wire"};
+    return str[is_wire ? 1 : 0];
+}
+
+// ********** vcd_module **********
+
+//! constructor
+//
+//! @param name name of this module
+//! @param parent parent module of this module
 vcd_module::vcd_module(const string_view &name, const vcd_module *parent) : parent(parent), name(name){}
 
+//! constructor
 vcd_module::vcd_module(string_view &header_str, const string_view &name_arg, vcd_module *parent) : parent(parent){
-    const string_view mod = get_tok(name_arg, 0, seperator);
+    const string_view mod = get_tok(name_arg, 0, separator);
     assert(mod == "module");
-    name = get_tok(name_arg, mod.size(), seperator).chomp();
+    name = get_tok(name_arg, mod.size(), separator).chomp();
 //    std::cerr << "Module '" << name << "' is created" << std::endl;
     for(string_view::param_pair_t param_pair = header_str.get_param(); header_str.size(); param_pair = header_str.get_param()){
         if(param_pair.first == "$scope"){
@@ -395,13 +427,16 @@ vcd_module::~vcd_module(){
     }
 }
 
-vcd_signal & vcd_module::add_signal(const string_view &name, const string_view &width, const string_view &symbol){
-    assert(signals.find(name) == signals.end());
-    vcd_signal *const s = new vcd_signal(name, width, symbol, this);
-    signals[name] = s;
+//! add signal to this module
+vcd_signal & vcd_module::add_signal(const vcd_signal &sig){
+    assert(signals.find(sig.get_name()) == signals.end());
+    vcd_signal *const s = new vcd_signal(sig);
+    s->set_parent(this);
+    signals[s->get_name()] = s;
     return *s;
 }
 
+//! updates the module hierarchy information
 void vcd_module::make_hierarchy_internal(){
     for(sig_it i = signals.begin(), end = signals.end(); i != end; ){
         const string_view new_sub_mod_name = get_tok(i->second->get_name(), 0, ".");
@@ -425,10 +460,12 @@ void vcd_module::make_hierarchy_internal(){
     }
 }
 
+//! get the name of this module
 const string_view & vcd_module::get_name()const{
     return name;
 }
 
+//! establish the module hierarchy information
 vcd_module * vcd_module::make_hierarchy()const{
     vcd_module *const new_mod = new vcd_module(*this);
     new_mod->signals.clear();
@@ -438,12 +475,13 @@ vcd_module * vcd_module::make_hierarchy()const{
         new_mod->sub_modules[i->second->get_name()]->parent = new_mod;
     }
     for(sig_const_it i = signals.begin(), end = signals.end(); i != end; ++i){
-        new_mod->add_signal(i->second->get_name(), i->second->get_width(), i->second->get_symbol());
+        new_mod->add_signal(*(i->second));
     }
     new_mod->make_hierarchy_internal();
     return new_mod;
 }
 
+//! dump this module and children for debugging
 void vcd_module::dump(std::ostream &os, int level)const{
     os
         << std::setw(level * 2) << std::setfill(' ') << ""
@@ -462,12 +500,13 @@ void vcd_module::dump(std::ostream &os, int level)const{
 
 }
 
+//! convert to the string information for output VCD
 void vcd_module::to_str(std::vector<char> &dst, int size_level, int level)const{
     dst << indent(size_level <= 0 ? level : 0) << "$scope module " << name << " $end\n";
     for(sig_const_it i = signals.begin(), end = signals.end(); i != end; ++i){
         const vcd_signal &sig = *i->second;
         dst << indent(size_level <= 0 ? level + 1 : 0)
-            << "$var wire " << sig.get_width()
+            << "$var " << sig.get_type_str() << " " << sig.get_width()
             << " " << sig.get_symbol()
             << " " << sig.get_name()
             << " $end\n";
@@ -479,6 +518,7 @@ void vcd_module::to_str(std::vector<char> &dst, int size_level, int level)const{
         << "$upscope $end\n";
 }
 
+//! collect the signals that belong to this module and descendant modules
 void vcd_module::collect_signals(std::vector<const vcd_signal *> &sigs)const{
     for(sig_const_it i = signals.begin(), end = signals.end(); i != end; ++i){
         sigs.push_back(i->second);
@@ -488,6 +528,7 @@ void vcd_module::collect_signals(std::vector<const vcd_signal *> &sigs)const{
     }
 }
 
+//! flatten the module hierarchy
 void vcd_module::flatten(std::vector<char> &dst, int size_level)const{
     assert(!parent);
     std::vector<const vcd_signal *> sigs;
@@ -498,7 +539,7 @@ void vcd_module::flatten(std::vector<char> &dst, int size_level)const{
     for(std::vector<const vcd_signal *>::const_iterator i = sigs.begin(), end = sigs.end(); i != end; ++i){
         const vcd_signal &sig = **i;
         dst 
-            << "$var wire " << sig.get_width()
+            << "$var" << sig.get_type_str() << " " << sig.get_width()
             << " " << sig.get_symbol()
             << " ";
         output_full_path(dst, sig)
@@ -508,11 +549,14 @@ void vcd_module::flatten(std::vector<char> &dst, int size_level)const{
         << "$upscope $end\n";
 }
 
+//! get the parent module
 const vcd_module * vcd_module::get_parent()const{
     return parent;
 }
 
+// ********** vcd_header **********
 
+//! construct from header string
 vcd_header::vcd_header(string_view &header_str){
     struct{
         const char *const str;
@@ -553,12 +597,14 @@ vcd_header::vcd_header(string_view &header_str){
 //    assert(!"Never comes here");
 }
 
+//! destructor
 vcd_header::~vcd_header(){
     for(mod_const_it i = top_modules.begin(), end = top_modules.end(); i != end; ++i){
         delete i->second;
     }
 }
 
+//! establish the hierarchy among modules
 vcd_header * vcd_header::make_hierarchy()const{
     vcd_header *const new_header = new vcd_header(*this);
     new_header->top_modules.clear();
@@ -570,12 +616,7 @@ vcd_header * vcd_header::make_hierarchy()const{
     return new_header;
 }
 
-vcd_header * parse_vcd_header(const string_view &all){
-    string_view header_str = all;
-    vcd_header *const header = new vcd_header(header_str);
-    return header;
-}
-
+//! dump the whole header information for debugging
 void vcd_header::dump(std::ostream &os)const{
     os
         << "date:'" << date << "'\n"
@@ -589,6 +630,7 @@ void vcd_header::dump(std::ostream &os)const{
     }
 }
 
+//! convert the information to string with hierarchy structure
 void vcd_header::to_str(std::vector<char> &dst, int level)const{
     if(level < 1){
         dst << "$date\n" << date << "\n$end\n";
@@ -607,6 +649,8 @@ void vcd_header::to_str(std::vector<char> &dst, int level)const{
         dst << "$comment\n" << comment << "\n$end\n";
     }
 }
+
+//! convert the information to string without hierarchy structure
 void vcd_header::flatten(std::vector<char> &dst, int level)const{
     if(level < 1){
         dst << "$date\n" << date << "\n$end\n";
@@ -625,3 +669,15 @@ void vcd_header::flatten(std::vector<char> &dst, int level)const{
         dst << "$comment\n" << comment << "\n$end\n";
     }
 }
+
+
+//! parse VCD header
+//
+//! @param all header string to be parsed
+//! @return header information
+vcd_header * parse_vcd_header(const string_view &all){
+    string_view header_str = all;
+    vcd_header *const header = new vcd_header(header_str);
+    return header;
+}
+

@@ -14,6 +14,11 @@
 #include "vcd_header.h"
 
 namespace{
+
+//! count the size of VCD header in Byte
+//
+//! @param filename VCD file
+//! @return size of VCD header
 size_t get_vcd_header_size(const char *filename){
     std::ifstream ifs(filename);
     if(!ifs){
@@ -31,6 +36,7 @@ size_t get_vcd_header_size(const char *filename){
     assert(!"Failed to read header");
 }
 
+//! RAII idiom for File descriptor
 struct fp_raii{
     std::FILE *const fp;
     explicit fp_raii(FILE *f) : fp(f){}
@@ -38,6 +44,12 @@ struct fp_raii{
     operator std::FILE *()const{return fp;}
 };
 
+//! Open File in create mode and write the whole data
+//
+//! @param orig_vcd Original VCD filename
+//! @param output_file New VCD file
+//! @param v header information
+//! @param header_size size of vcd header
 int make_new_file_and_write(const char *orig_vcd, const char *output_file, const std::vector<char> &v, size_t header_size){
     fp_raii ofp(std::fopen(output_file, "w"));
     if(!ofp){
@@ -69,6 +81,12 @@ int make_new_file_and_write(const char *orig_vcd, const char *output_file, const
     return 0;
 
 }
+
+//! update the header in-place
+//
+//! @param dst start point of VCD to be modified
+//! @param v_ data to be written
+//! @param header_size VCD header size
 int inplace_mod(void *dst, const std::vector<char> &v_, size_t header_size){
     std::vector<char> v = v_;
     const unsigned int fill_unit = 80;

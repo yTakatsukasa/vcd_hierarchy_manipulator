@@ -43,6 +43,8 @@ class vcd_module;
 class vcd_signal{
     //! pointer to the module that contain this signal
     const vcd_module *parent;
+    //! true if this is wire
+    bool is_wire;
     //! bit width of this signal
     string_view width;
     //! symbol in VCD file
@@ -51,7 +53,6 @@ class vcd_signal{
     string_view name;
     public:
     vcd_signal(const string_view &, const vcd_module *);
-    vcd_signal(const string_view &, const string_view &, const string_view &, vcd_module *);
     const string_view &get_name()const;
     const string_view &get_width()const;
     const string_view &get_symbol()const;
@@ -59,6 +60,7 @@ class vcd_signal{
     void set_parent(const vcd_module *);
     void dump(std::ostream &, int)const;
     const vcd_module *get_parent()const;
+    const char *get_type_str()const;
 };
 
 //! module (hierarchy unit) in VCD file
@@ -87,7 +89,7 @@ class vcd_module{
     mod_map_type sub_modules;
     vcd_module(const string_view &, const vcd_module *);
     void make_hierarchy_internal();
-    vcd_signal & add_signal(const string_view &name, const string_view &widh, const string_view &symbol);
+    vcd_signal & add_signal(const vcd_signal &);
     void collect_signals(std::vector<const vcd_signal *> &)const;
     public:
     vcd_module(string_view &, const string_view &, vcd_module *);
