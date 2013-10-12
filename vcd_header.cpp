@@ -539,7 +539,7 @@ void vcd_module::flatten(std::vector<char> &dst, int size_level)const{
     for(std::vector<const vcd_signal *>::const_iterator i = sigs.begin(), end = sigs.end(); i != end; ++i){
         const vcd_signal &sig = **i;
         dst 
-            << "$var" << sig.get_type_str() << " " << sig.get_width()
+            << "$var " << sig.get_type_str() << " " << sig.get_width()
             << " " << sig.get_symbol()
             << " ";
         output_full_path(dst, sig)
