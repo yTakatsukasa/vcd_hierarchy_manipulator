@@ -5,14 +5,14 @@ INCLUDE_DIRS		:=
 CC					?= gcc
 CXX					?= g++
 CPP					?= cpp
-CPPFLAGS			:= $(addprefix -I,$(INCLUDE_DIRS))
+CPPFLAGS			:= $(addprefix -I,$(INCLUDE_DIRS)) -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 # -D_LARGEFILE64_SOURCE
 ifeq ($(DEBUG),1)
 DEBUGGER_CMD		:= gdb --args
 CXXFLAGS			:= -MD -g3 -O0 -Wall
 V					:= 1
 else
 DEBUGGER_CMD		:=
-CXXFLAGS			:= -MD -O3 -Wall -march=nocona -fomit-frame-pointer
+CXXFLAGS			:= -MD -O3 -Wall -fomit-frame-pointer
 endif
 CFLAGS				:= $(CXXFLAGS)
 LIB_DIRS			:=

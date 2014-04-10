@@ -1,6 +1,6 @@
 #include <sys/mman.h>//mmap, munmap
 #include <sys/stat.h>//open
-#include <fcntl.h>//O_LARGEFILE, O_RDWR, O_RDONLY
+#include <fcntl.h>//O_RDWR, O_RDONLY
 #include <unistd.h> //close
 #include <cstdlib>
 
@@ -42,7 +42,7 @@ struct mmap_manager::impl{
 //! @param is_writable accessibility of the mapped region
 //! @param size size of mapped region in Byte
 mmap_manager::impl::impl(const char *filename, bool is_writable, size_t size){
-    fd = open(filename, O_LARGEFILE | O_SYNC | (is_writable ? O_RDWR : O_RDONLY));
+    fd = open(filename, O_SYNC | (is_writable ? O_RDWR : O_RDONLY));
     if(fd < 0){
         perror(filename);
         std::abort();
