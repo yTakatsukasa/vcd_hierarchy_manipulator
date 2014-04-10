@@ -35,26 +35,6 @@ string_view get_tok(const string_view &str, size_t offset, const char *sep){
 
 }
 
-//! cut out 1 line from str
-//
-//! @param str string to be cut
-//! @param offset start of returned string
-//! @return 1 line of string
-string_view get_line(const string_view &str, size_t offset){
-    return get_tok(str, offset, "\n");
-}
-
-//! cut the begining whitespaces of s
-//
-//! @param s string to check
-//! @return part of s which starts with non-whitespace character
-string_view skip_begging_blank(const string_view &s){
-    for(size_t i = 0; i < s.size(); ++i){
-        if(s[i] != ' ') return string_view(&s[i], s.size() - i);
-    }
-    return string_view(&s[0] + s.size(), 0);
-}
-
 //! indent
 struct indent{
     //! depth of indent
