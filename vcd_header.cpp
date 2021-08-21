@@ -386,8 +386,8 @@ vcd_module::vcd_module(string_view &header_str, const string_view &name_arg, vcd
         }
         else if(param_pair.first == "$var"){
             vcd_signal *const sig = new vcd_signal(param_pair.second, this);
-            assert(signals.find(sig->get_name()) == signals.end());
-            signals[sig->get_name()] = sig;
+            assert(signals.find(sig->get_symbol()) == signals.end());
+            signals[sig->get_symbol()] = sig;
         }
         else if(param_pair.first == "$upscope"){
             return;
@@ -409,10 +409,10 @@ vcd_module::~vcd_module(){
 
 //! add signal to this module
 vcd_signal & vcd_module::add_signal(const vcd_signal &sig){
-    assert(signals.find(sig.get_name()) == signals.end());
+    assert(signals.find(sig.get_symbol()) == signals.end());
     vcd_signal *const s = new vcd_signal(sig);
     s->set_parent(this);
-    signals[s->get_name()] = s;
+    signals[s->get_symbol()] = s;
     return *s;
 }
 
@@ -428,10 +428,10 @@ void vcd_module::make_hierarchy_internal(){
             if(sub_modules.find(new_sub_mod_name) == sub_modules.end())
                 sub_modules[new_sub_mod_name] = new vcd_module(new_sub_mod_name, this);
             vcd_module &sub_mod = *sub_modules[new_sub_mod_name];
-            assert(sub_mod.signals.find(new_signal_name) == sub_mod.signals.end());
+            assert(sub_mod.signals.find(i->second->get_symbol()) == sub_mod.signals.end());
             i->second->set_name(new_signal_name);
             i->second->set_parent(&sub_mod);
-            sub_mod.signals[new_signal_name] = i->second;
+            sub_mod.signals[i->second->get_symbol()] = i->second;
             signals.erase(i++);
         }
     }
@@ -623,7 +623,7 @@ void vcd_header::to_str(std::vector<char> &dst, int level)const{
     for(mod_const_it i = top_modules.begin(), end = top_modules.end(); i != end; ++i){
         i->second->to_str(dst, level, 1);
     }
-    if(level < 1){
+    if(level < 1 && comment.size() > 0){
         if(level <= 0) dst << "\n";
         dst << "$comment\n" << comment << "\n$end\n";
     }
@@ -642,7 +642,7 @@ void vcd_header::flatten(std::vector<char> &dst, int level)const{
     for(mod_const_it i = top_modules.begin(), end = top_modules.end(); i != end; ++i){
         i->second->flatten(dst, level);
     }
-    if(level < 1){
+    if(level < 1 && comment.size() > 0){
         if(level <= 0) dst << "\n";
         dst << "$comment\n" << comment << "\n$end\n";
     }
