@@ -623,7 +623,6 @@ void vcd_header::to_str(std::vector<char> &dst, int level)const{
     for(mod_const_it i = top_modules.begin(), end = top_modules.end(); i != end; ++i){
         i->second->to_str(dst, level, 1);
     }
-    dst << "$enddefinitions $end\n";
     if(level < 1){
         if(level <= 0) dst << "\n";
         dst << "$comment\n" << comment << "\n$end\n";
@@ -643,7 +642,6 @@ void vcd_header::flatten(std::vector<char> &dst, int level)const{
     for(mod_const_it i = top_modules.begin(), end = top_modules.end(); i != end; ++i){
         i->second->flatten(dst, level);
     }
-    dst << "$enddefinitions $end\n";
     if(level < 1){
         if(level <= 0) dst << "\n";
         dst << "$comment\n" << comment << "\n$end\n";

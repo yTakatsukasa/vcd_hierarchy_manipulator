@@ -27,8 +27,7 @@ size_t get_vcd_header_size(const char *filename){
     }
     size_t size = 0;
     for(std::string line; ifs && std::getline(ifs, line); ){
-        if(line == "$dumpvars"){
-            assert(line.size() == 9);
+        if (line.find("$enddefinitions") != std::string::npos) {
             return size;
         }
         size += line.size() + 1; //+1 is a sizeof('\n')
