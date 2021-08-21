@@ -17,3 +17,6 @@ vcd_hier_manip
 
 #doxygen
 html
+
+# Test dir
+test_run

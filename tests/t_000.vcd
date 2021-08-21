@@ -1,0 +1,355 @@
+$date
+     Aug 19, 2021       14:54:46
+$end
+
+$version
+              SystemC 2.3.0-ASI --- Jun 20 2013 11:44:15
+$end
+
+$timescale
+     1 ps
+$end
+
+$scope module SystemC $end
+$var wire    1  aaa  u_tb.reset_n       $end
+$var wire    1  aab  u_tb.ahb0_hsel       $end
+$var wire    1  aac  u_tb.ahb0_hwrite       $end
+$var wire    2  aad  u_tb.ahb0_htrans [1:0]  $end
+$var wire    3  aae  u_tb.ahb0_hsize [2:0]  $end
+$var wire    3  aaf  u_tb.ahb0_hburst [2:0]  $end
+$var wire    4  aag  u_tb.ahb0_hprot [3:0]  $end
+$var wire   32  aah  u_tb.ahb0_haddr [31:0]  $end
+$var wire   64  aai  u_tb.ahb0_hwdata [63:0]  $end
+$var wire   64  aaj  u_tb.ahb0_hrdata [63:0]  $end
+$var wire    1  aak  u_tb.ahb0_hready       $end
+$var wire    2  aal  u_tb.ahb0_hresp [1:0]  $end
+$var wire    1  aam  u_tb.ahb1_hsel       $end
+$var wire    1  aan  u_tb.ahb1_hwrite       $end
+$var wire    2  aao  u_tb.ahb1_htrans [1:0]  $end
+$var wire    3  aap  u_tb.ahb1_hsize [2:0]  $end
+$var wire    3  aaq  u_tb.ahb1_hburst [2:0]  $end
+$var wire    4  aar  u_tb.ahb1_hprot [3:0]  $end
+$var wire   32  aas  u_tb.ahb1_haddr [31:0]  $end
+$var wire   64  aat  u_tb.ahb1_hwdata [63:0]  $end
+$var wire   64  aau  u_tb.ahb1_hrdata [63:0]  $end
+$var wire    1  aav  u_tb.ahb1_hready       $end
+$var wire    2  aaw  u_tb.ahb1_hresp [1:0]  $end
+$var wire    1  aax  u_tb.ahb2_hsel       $end
+$var wire    1  aay  u_tb.ahb2_hwrite       $end
+$var wire    2  aaz  u_tb.ahb2_htrans [1:0]  $end
+$var wire    3  aba  u_tb.ahb2_hsize [2:0]  $end
+$var wire    3  abb  u_tb.ahb2_hburst [2:0]  $end
+$var wire    4  abc  u_tb.ahb2_hprot [3:0]  $end
+$var wire   32  abd  u_tb.ahb2_haddr [31:0]  $end
+$var wire   64  abe  u_tb.ahb2_hwdata [63:0]  $end
+$var wire   64  abf  u_tb.ahb2_hrdata [63:0]  $end
+$var wire    1  abg  u_tb.ahb2_hready       $end
+$var wire    2  abh  u_tb.ahb2_hresp [1:0]  $end
+$var wire    1  abi  u_tb.ahb3_hsel       $end
+$var wire    1  abj  u_tb.ahb3_hwrite       $end
+$var wire    2  abk  u_tb.ahb3_htrans [1:0]  $end
+$var wire    3  abl  u_tb.ahb3_hsize [2:0]  $end
+$var wire    3  abm  u_tb.ahb3_hburst [2:0]  $end
+$var wire    4  abn  u_tb.ahb3_hprot [3:0]  $end
+$var wire   32  abo  u_tb.ahb3_haddr [31:0]  $end
+$var wire   32  abp  u_tb.ahb3_hwdata [31:0]  $end
+$var wire   32  abq  u_tb.ahb3_hrdata [31:0]  $end
+$var wire    1  abr  u_tb.ahb3_hready       $end
+$var wire    2  abs  u_tb.ahb3_hresp [1:0]  $end
+$var wire    1  abt  u_tb.psel       $end
+$var wire    1  abu  u_tb.penable       $end
+$var wire    1  abv  u_tb.pwrite       $end
+$var wire   32  abw  u_tb.paddr [31:0]  $end
+$var wire   32  abx  u_tb.pwdata [31:0]  $end
+$var wire   32  aby  u_tb.prdata [31:0]  $end
+$var wire    1  abz  u_tb.pready       $end
+$var wire    1  aca  u_tb.pslverr       $end
+$var wire    1  acb  u_tb.mem2ahb_ReadMemoryRequest       $end
+$var wire    1  acc  u_tb.mem2ahb_ReadMemoryAck       $end
+$var wire    1  acd  u_tb.mem2ahb_ReadMemoryDataValid       $end
+$var wire    1  ace  u_tb.mem2ahb_WriteMemoryRequest       $end
+$var wire    1  acf  u_tb.mem2ahb_WriteMemoryAck       $end
+$var wire    1  acg  u_tb.mem2ahb_WriteMemoryDone       $end
+$var wire   32  ach  u_tb.mem2ahb_ReadMemoryAddress [31:0]  $end
+$var wire   32  aci  u_tb.mem2ahb_ReadMemoryData [31:0]  $end
+$var wire   32  acj  u_tb.mem2ahb_WriteMemoryAddress [31:0]  $end
+$var wire   32  ack  u_tb.mem2ahb_WriteMemoryData [31:0]  $end
+$var wire    1  acl  u_tb.ahb2mem_ReadMemoryRequest       $end
+$var wire    1  acm  u_tb.ahb2mem_WriteMemoryRequest       $end
+$var wire   32  acn  u_tb.ahb2mem_ReadMemoryAddress [31:0]  $end
+$var wire   32  aco  u_tb.ahb2mem_ReadMemoryData [31:0]  $end
+$var wire   32  acp  u_tb.ahb2mem_WriteMemoryAddress [31:0]  $end
+$var wire   32  acq  u_tb.ahb2mem_WriteMemoryData [31:0]  $end
+$var wire   32  acr  u_tb.u_AhbApbTest.testNumber [31:0]  $end
+$var wire   32  acs  u_tb.u_AhbApbTest.cmdNumber [31:0]  $end
+$var wire   32  act  u_tb.u_AhbApbTest.loopCount [31:0]  $end
+$var wire    1  acu  u_tb.u_AhbApbTest.randomize       $end
+$var wire    1  acv  u_tb.u_AhbApbTest.dumpData       $end
+$var wire   32  acw  u_tb.u_AhbApbTest.dumpMask [31:0]  $end
+$var wire    1  acx  u_tb.u_AhbApbTest.testStart       $end
+$var wire    1  acy  u_tb.u_AhbApbTest.testEnd       $end
+$var wire   32  acz  u_tb.u_AhbApbTest.errorCount [31:0]  $end
+$var wire   32  ada  u_tb.u_AhbApbTest.verbosity [31:0]  $end
+$var wire   32  adb  u_tb.u_AhbApbTest.count [31:0]  $end
+$var wire    8  adc  u_tb.u_AhbApbTest.command [7:0]  $end
+$var wire   32  add  u_tb.u_AhbApbTest.readAddress [31:0]  $end
+$var wire    8  ade  u_tb.u_AhbApbTest.mode [7:0]  $end
+$var wire   32  adf  u_tb.u_AhbApbTest.mem2ahbState [31:0]  $end
+$var wire   32  adg  u_tb.u_AhbApbTest.ahb2memState [31:0]  $end
+$var wire   32  adh  u_tb.u_ahb_master.state [31:0]  $end
+$var wire   32  adi  u_tb.u_ahb_master.writeAddr [31:0]  $end
+$var wire   64  adj  u_tb.u_ahb_master.writeData [63:0]  $end
+$var wire    1  adk  u_tb.u_ahb_master.writeRequest       $end
+$var wire    1  adl  u_tb.u_ahb_master.writeRequestDone       $end
+$var wire    3  adm  u_tb.u_ahb_master.writeDataSize [2:0]  $end
+$var wire   32  adn  u_tb.u_ahb_master.readAddr [31:0]  $end
+$var wire   64  ado  u_tb.u_ahb_master.readData [63:0]  $end
+$var wire    1  adp  u_tb.u_ahb_master.readRequest       $end
+$var wire    1  adq  u_tb.u_ahb_master.readRequestDone       $end
+$var wire    3  adr  u_tb.u_ahb_master.readDataSize [2:0]  $end
+$var wire   32  ads  u_tb.u_ahb_master.dataNibbleWidth [31:0]  $end
+$var wire   32  adt  u_tb.u_tlm2ahb1.state [31:0]  $end
+$var wire   32  adu  u_tb.u_tlm2ahb1.writeAddr [31:0]  $end
+$var wire   32  adv  u_tb.u_tlm2ahb1.writeData [31:0]  $end
+$var wire    1  adw  u_tb.u_tlm2ahb1.writeRequest       $end
+$var wire    1  adx  u_tb.u_tlm2ahb1.writeRequestDone       $end
+$var wire   32  ady  u_tb.u_tlm2ahb1.readAddr [31:0]  $end
+$var wire   32  adz  u_tb.u_tlm2ahb1.readData [31:0]  $end
+$var wire    1  aea  u_tb.u_tlm2ahb1.readRequest       $end
+$var wire    1  aeb  u_tb.u_tlm2ahb1.readRequestDone       $end
+$var wire   32  aec  u_tb.u_ahb_slave.state [31:0]  $end
+$var wire   32  aed  u_tb.u_ahb_master.state [31:0]  $end
+$var wire   32  aee  u_tb.u_ahb_master.writeAddr [31:0]  $end
+$var wire   64  aef  u_tb.u_ahb_master.writeData [63:0]  $end
+$var wire    1  aeg  u_tb.u_ahb_master.writeRequest       $end
+$var wire    1  aeh  u_tb.u_ahb_master.writeRequestDone       $end
+$var wire    3  aei  u_tb.u_ahb_master.writeDataSize [2:0]  $end
+$var wire   32  aej  u_tb.u_ahb_master.readAddr [31:0]  $end
+$var wire   64  aek  u_tb.u_ahb_master.readData [63:0]  $end
+$var wire    1  ael  u_tb.u_ahb_master.readRequest       $end
+$var wire    1  aem  u_tb.u_ahb_master.readRequestDone       $end
+$var wire    3  aen  u_tb.u_ahb_master.readDataSize [2:0]  $end
+$var wire   32  aeo  u_tb.u_ahb_master.dataNibbleWidth [31:0]  $end
+$var wire   32  aep  u_tb.u_ahb2tlm0.state [31:0]  $end
+$var wire   32  aeq  u_tb.u_ahb2tlm1.state [31:0]  $end
+$var wire   32  aer  u_tb.u_tlm2ahb0.state [31:0]  $end
+$var wire   32  aes  u_tb.u_tlm2ahb0.writeAddr [31:0]  $end
+$var wire   64  aet  u_tb.u_tlm2ahb0.writeData [63:0]  $end
+$var wire    1  aeu  u_tb.u_tlm2ahb0.writeRequest       $end
+$var wire    1  aev  u_tb.u_tlm2ahb0.writeRequestDone       $end
+$var wire   32  aew  u_tb.u_tlm2ahb0.readAddr [31:0]  $end
+$var wire   64  aex  u_tb.u_tlm2ahb0.readData [63:0]  $end
+$var wire    1  aey  u_tb.u_tlm2ahb0.readRequest       $end
+$var wire    1  aez  u_tb.u_tlm2ahb0.readRequestDone       $end
+$var wire   32  afa  u_tb.u_apb_slave.state [31:0]  $end
+$var wire   32  afb  u_tb.u_tlm2ahb0.state [31:0]  $end
+$var wire   32  afc  u_tb.u_tlm2ahb0.writeAddr [31:0]  $end
+$var wire   64  afd  u_tb.u_tlm2ahb0.writeData [63:0]  $end
+$var wire    1  afe  u_tb.u_tlm2ahb0.writeRequest       $end
+$var wire    1  aff  u_tb.u_tlm2ahb0.writeRequestDone       $end
+$var wire   32  afg  u_tb.u_tlm2ahb0.readAddr [31:0]  $end
+$var wire   64  afh  u_tb.u_tlm2ahb0.readData [63:0]  $end
+$var wire    1  afi  u_tb.u_tlm2ahb0.readRequest       $end
+$var wire    1  afj  u_tb.u_tlm2ahb0.readRequestDone       $end
+$var wire   32  afk  u_tb.u_tlm2ahb1.state [31:0]  $end
+$var wire   32  afl  u_tb.u_tlm2ahb1.writeAddr [31:0]  $end
+$var wire   32  afm  u_tb.u_tlm2ahb1.writeData [31:0]  $end
+$var wire    1  afn  u_tb.u_tlm2ahb1.writeRequest       $end
+$var wire    1  afo  u_tb.u_tlm2ahb1.writeRequestDone       $end
+$var wire   32  afp  u_tb.u_tlm2ahb1.readAddr [31:0]  $end
+$var wire   32  afq  u_tb.u_tlm2ahb1.readData [31:0]  $end
+$var wire    1  afr  u_tb.u_tlm2ahb1.readRequest       $end
+$var wire    1  afs  u_tb.u_tlm2ahb1.readRequestDone       $end
+$var wire   32  aft  u_tb.u_ahb2tlm0.state [31:0]  $end
+$var wire   32  afu  u_tb.u_ahb2tlm1.state [31:0]  $end
+$var wire   64  afv  u_tb.u_ahb_master.hwdata [63:0]  $end
+$var wire   64  afw  u_tb.u_ahb_master.hwdata [63:0]  $end
+$var wire   32  afx  u_tb.u_ahb_master.haddr [31:0]  $end
+$var wire   32  afy  u_tb.u_ahb_master.haddr [31:0]  $end
+$var wire    4  afz  u_tb.u_ahb_master.hprot [3:0]  $end
+$var wire    4  aga  u_tb.u_ahb_master.hprot [3:0]  $end
+$var wire    3  agb  u_tb.u_ahb_master.hburst [2:0]  $end
+$var wire    3  agc  u_tb.u_ahb_master.hburst [2:0]  $end
+$var wire    3  agd  u_tb.u_ahb_master.hsize [2:0]  $end
+$var wire    3  age  u_tb.u_ahb_master.hsize [2:0]  $end
+$var wire    2  agf  u_tb.u_ahb_master.htrans [1:0]  $end
+$var wire    2  agg  u_tb.u_ahb_master.htrans [1:0]  $end
+$var wire    1  agh  u_tb.u_ahb_master.hwrite       $end
+$var wire    1  agi  u_tb.u_ahb_master.hwrite       $end
+$var wire    1  agj  u_tb.u_ahb_master.hsel       $end
+$var wire    1  agk  u_tb.u_ahb_master.hsel       $end
+$var wire    2  agl  u_tb.u_ahb_master.hresp [1:0]  $end
+$var wire    2  agm  u_tb.u_ahb_master.hresp [1:0]  $end
+$var wire    1  agn  u_tb.u_ahb_master.hready       $end
+$var wire    1  ago  u_tb.u_ahb_master.hready       $end
+$var wire   64  agp  u_tb.u_ahb_master.hrdata [63:0]  $end
+$var wire   64  agq  u_tb.u_ahb_master.hrdata [63:0]  $end
+$var wire    1  agr  u_tb.u_ahb_master.reset_n       $end
+$var wire    1  ags  u_tb.u_ahb_master.reset_n       $end
+$var wire    1  agt  u_tb.u_ahb_master.clk       $end
+$var wire    1  agu  u_tb.u_ahb_master.clk       $end
+$var wire    2  agv  u_tb.u_ahb_slave.hresp [1:0]  $end
+$var wire    1  agw  u_tb.u_ahb_slave.hready       $end
+$var wire   64  agx  u_tb.u_ahb_slave.hrdata [63:0]  $end
+$var wire   64  agy  u_tb.u_ahb_slave.hwdata [63:0]  $end
+$var wire   32  agz  u_tb.u_ahb_slave.haddr [31:0]  $end
+$var wire    4  aha  u_tb.u_ahb_slave.hprot [3:0]  $end
+$var wire    3  ahb  u_tb.u_ahb_slave.hburst [2:0]  $end
+$var wire    3  ahc  u_tb.u_ahb_slave.hsize [2:0]  $end
+$var wire    2  ahd  u_tb.u_ahb_slave.htrans [1:0]  $end
+$var wire    1  ahe  u_tb.u_ahb_slave.hwrite       $end
+$var wire    1  ahf  u_tb.u_ahb_slave.hsel       $end
+$var wire    1  ahg  u_tb.u_ahb_slave.reset_n       $end
+$var wire    1  ahh  u_tb.u_ahb_slave.clk       $end
+$var wire    1  ahi  u_tb.u_apb_slave.pslverr       $end
+$var wire    1  ahj  u_tb.u_apb_slave.pready       $end
+$var wire   32  ahk  u_tb.u_apb_slave.prdata [31:0]  $end
+$var wire   32  ahl  u_tb.u_apb_slave.pwdata [31:0]  $end
+$var wire   32  ahm  u_tb.u_apb_slave.paddr [31:0]  $end
+$var wire    1  ahn  u_tb.u_apb_slave.pwrite       $end
+$var wire    1  aho  u_tb.u_apb_slave.penable       $end
+$var wire    1  ahp  u_tb.u_apb_slave.psel       $end
+$var wire    1  ahq  u_tb.u_apb_slave.reset_n       $end
+$var wire    1  ahr  u_tb.u_apb_slave.clk       $end
+$var wire   32  ahs  u_tb.u_AhbApbTest.ahb2mem_WriteMemoryData [31:0]  $end
+$var wire   32  aht  u_tb.u_AhbApbTest.ahb2mem_WriteMemoryAddress [31:0]  $end
+$var wire   32  ahu  u_tb.u_AhbApbTest.ahb2mem_ReadMemoryData [31:0]  $end
+$var wire   32  ahv  u_tb.u_AhbApbTest.ahb2mem_ReadMemoryAddress [31:0]  $end
+$var wire    1  ahw  u_tb.u_AhbApbTest.ahb2mem_WriteMemoryRequest       $end
+$var wire    1  ahx  u_tb.u_AhbApbTest.ahb2mem_ReadMemoryRequest       $end
+$var wire   32  ahy  u_tb.u_AhbApbTest.mem2ahb_WriteMemoryData [31:0]  $end
+$var wire   32  ahz  u_tb.u_AhbApbTest.mem2ahb_WriteMemoryAddress [31:0]  $end
+$var wire   32  aia  u_tb.u_AhbApbTest.mem2ahb_ReadMemoryData [31:0]  $end
+$var wire   32  aib  u_tb.u_AhbApbTest.mem2ahb_ReadMemoryAddress [31:0]  $end
+$var wire    1  aic  u_tb.u_AhbApbTest.mem2ahb_WriteMemoryDone       $end
+$var wire    1  aid  u_tb.u_AhbApbTest.mem2ahb_WriteMemoryAck       $end
+$var wire    1  aie  u_tb.u_AhbApbTest.mem2ahb_WriteMemoryRequest       $end
+$var wire    1  aif  u_tb.u_AhbApbTest.mem2ahb_ReadMemoryDataValid       $end
+$var wire    1  aig  u_tb.u_AhbApbTest.mem2ahb_ReadMemoryAck       $end
+$var wire    1  aih  u_tb.u_AhbApbTest.mem2ahb_ReadMemoryRequest       $end
+$var wire    1  aii  u_tb.u_AhbApbTest.clk       $end
+$var wire    1  aij  u_tb.u_AhbApbTest.reset_n       $end
+$var wire    2  aik  u_tb.u_ahb2tlm1.hresp [1:0]  $end
+$var wire    2  ail  u_tb.u_ahb2tlm1.hresp [1:0]  $end
+$var wire   64  aim  u_tb.u_ahb2tlm1.hrdata [63:0]  $end
+$var wire   64  ain  u_tb.u_ahb2tlm1.hrdata [63:0]  $end
+$var wire    1  aio  u_tb.u_ahb2tlm1.hready       $end
+$var wire    1  aip  u_tb.u_ahb2tlm1.hready       $end
+$var wire   64  aiq  u_tb.u_ahb2tlm1.hwdata [63:0]  $end
+$var wire   64  air  u_tb.u_ahb2tlm1.hwdata [63:0]  $end
+$var wire    4  ais  u_tb.u_ahb2tlm1.hprot [3:0]  $end
+$var wire    4  ait  u_tb.u_ahb2tlm1.hprot [3:0]  $end
+$var wire    3  aiu  u_tb.u_ahb2tlm1.hburst [2:0]  $end
+$var wire    3  aiv  u_tb.u_ahb2tlm1.hburst [2:0]  $end
+$var wire    3  aiw  u_tb.u_ahb2tlm1.hsize [2:0]  $end
+$var wire    3  aix  u_tb.u_ahb2tlm1.hsize [2:0]  $end
+$var wire    2  aiy  u_tb.u_ahb2tlm1.htrans [1:0]  $end
+$var wire    2  aiz  u_tb.u_ahb2tlm1.htrans [1:0]  $end
+$var wire   32  aja  u_tb.u_ahb2tlm1.haddr [31:0]  $end
+$var wire   32  ajb  u_tb.u_ahb2tlm1.haddr [31:0]  $end
+$var wire    1  ajc  u_tb.u_ahb2tlm1.hwrite       $end
+$var wire    1  ajd  u_tb.u_ahb2tlm1.hwrite       $end
+$var wire    1  aje  u_tb.u_ahb2tlm1.hsel       $end
+$var wire    1  ajf  u_tb.u_ahb2tlm1.hsel       $end
+$var wire    1  ajg  u_tb.u_ahb2tlm1.reset_n       $end
+$var wire    1  ajh  u_tb.u_ahb2tlm1.reset_n       $end
+$var wire    1  aji  u_tb.u_ahb2tlm1.clk       $end
+$var wire    1  ajj  u_tb.u_ahb2tlm1.clk       $end
+$var wire    2  ajk  u_tb.u_ahb2tlm0.hresp [1:0]  $end
+$var wire    2  ajl  u_tb.u_ahb2tlm0.hresp [1:0]  $end
+$var wire   64  ajm  u_tb.u_ahb2tlm0.hrdata [63:0]  $end
+$var wire   64  ajn  u_tb.u_ahb2tlm0.hrdata [63:0]  $end
+$var wire    1  ajo  u_tb.u_ahb2tlm0.hready       $end
+$var wire    1  ajp  u_tb.u_ahb2tlm0.hready       $end
+$var wire   64  ajq  u_tb.u_ahb2tlm0.hwdata [63:0]  $end
+$var wire   64  ajr  u_tb.u_ahb2tlm0.hwdata [63:0]  $end
+$var wire    4  ajs  u_tb.u_ahb2tlm0.hprot [3:0]  $end
+$var wire    4  ajt  u_tb.u_ahb2tlm0.hprot [3:0]  $end
+$var wire    3  aju  u_tb.u_ahb2tlm0.hburst [2:0]  $end
+$var wire    3  ajv  u_tb.u_ahb2tlm0.hburst [2:0]  $end
+$var wire    3  ajw  u_tb.u_ahb2tlm0.hsize [2:0]  $end
+$var wire    3  ajx  u_tb.u_ahb2tlm0.hsize [2:0]  $end
+$var wire    2  ajy  u_tb.u_ahb2tlm0.htrans [1:0]  $end
+$var wire    2  ajz  u_tb.u_ahb2tlm0.htrans [1:0]  $end
+$var wire   32  aka  u_tb.u_ahb2tlm0.haddr [31:0]  $end
+$var wire   32  akb  u_tb.u_ahb2tlm0.haddr [31:0]  $end
+$var wire    1  akc  u_tb.u_ahb2tlm0.hwrite       $end
+$var wire    1  akd  u_tb.u_ahb2tlm0.hwrite       $end
+$var wire    1  ake  u_tb.u_ahb2tlm0.hsel       $end
+$var wire    1  akf  u_tb.u_ahb2tlm0.hsel       $end
+$var wire    1  akg  u_tb.u_ahb2tlm0.reset_n       $end
+$var wire    1  akh  u_tb.u_ahb2tlm0.reset_n       $end
+$var wire    1  aki  u_tb.u_ahb2tlm0.clk       $end
+$var wire    1  akj  u_tb.u_ahb2tlm0.clk       $end
+$var wire   32  akk  u_tb.u_tlm2ahb1.hwdata [31:0]  $end
+$var wire   32  akl  u_tb.u_tlm2ahb1.hwdata [31:0]  $end
+$var wire    4  akm  u_tb.u_tlm2ahb1.hprot [3:0]  $end
+$var wire    4  akn  u_tb.u_tlm2ahb1.hprot [3:0]  $end
+$var wire    3  ako  u_tb.u_tlm2ahb1.hburst [2:0]  $end
+$var wire    3  akp  u_tb.u_tlm2ahb1.hburst [2:0]  $end
+$var wire    3  akq  u_tb.u_tlm2ahb1.hsize [2:0]  $end
+$var wire    3  akr  u_tb.u_tlm2ahb1.hsize [2:0]  $end
+$var wire    2  aks  u_tb.u_tlm2ahb1.htrans [1:0]  $end
+$var wire    2  akt  u_tb.u_tlm2ahb1.htrans [1:0]  $end
+$var wire   32  aku  u_tb.u_tlm2ahb1.haddr [31:0]  $end
+$var wire   32  akv  u_tb.u_tlm2ahb1.haddr [31:0]  $end
+$var wire    1  akw  u_tb.u_tlm2ahb1.hwrite       $end
+$var wire    1  akx  u_tb.u_tlm2ahb1.hwrite       $end
+$var wire    1  aky  u_tb.u_tlm2ahb1.hsel       $end
+$var wire    1  akz  u_tb.u_tlm2ahb1.hsel       $end
+$var wire    2  ala  u_tb.u_tlm2ahb1.hresp [1:0]  $end
+$var wire    2  alb  u_tb.u_tlm2ahb1.hresp [1:0]  $end
+$var wire   32  alc  u_tb.u_tlm2ahb1.hrdata [31:0]  $end
+$var wire   32  ald  u_tb.u_tlm2ahb1.hrdata [31:0]  $end
+$var wire    1  ale  u_tb.u_tlm2ahb1.hready       $end
+$var wire    1  alf  u_tb.u_tlm2ahb1.hready       $end
+$var wire    1  alg  u_tb.u_tlm2ahb1.reset_n       $end
+$var wire    1  alh  u_tb.u_tlm2ahb1.reset_n       $end
+$var wire    1  ali  u_tb.u_tlm2ahb1.clk       $end
+$var wire    1  alj  u_tb.u_tlm2ahb1.clk       $end
+$var wire   64  alk  u_tb.u_tlm2ahb0.hwdata [63:0]  $end
+$var wire   64  all  u_tb.u_tlm2ahb0.hwdata [63:0]  $end
+$var wire    4  alm  u_tb.u_tlm2ahb0.hprot [3:0]  $end
+$var wire    4  aln  u_tb.u_tlm2ahb0.hprot [3:0]  $end
+$var wire    3  alo  u_tb.u_tlm2ahb0.hburst [2:0]  $end
+$var wire    3  alp  u_tb.u_tlm2ahb0.hburst [2:0]  $end
+$var wire    3  alq  u_tb.u_tlm2ahb0.hsize [2:0]  $end
+$var wire    3  alr  u_tb.u_tlm2ahb0.hsize [2:0]  $end
+$var wire    2  als  u_tb.u_tlm2ahb0.htrans [1:0]  $end
+$var wire    2  alt  u_tb.u_tlm2ahb0.htrans [1:0]  $end
+$var wire   32  alu  u_tb.u_tlm2ahb0.haddr [31:0]  $end
+$var wire   32  alv  u_tb.u_tlm2ahb0.haddr [31:0]  $end
+$var wire    1  alw  u_tb.u_tlm2ahb0.hwrite       $end
+$var wire    1  alx  u_tb.u_tlm2ahb0.hwrite       $end
+$var wire    1  aly  u_tb.u_tlm2ahb0.hsel       $end
+$var wire    1  alz  u_tb.u_tlm2ahb0.hsel       $end
+$var wire    2  ama  u_tb.u_tlm2ahb0.hresp [1:0]  $end
+$var wire    2  amb  u_tb.u_tlm2ahb0.hresp [1:0]  $end
+$var wire   64  amc  u_tb.u_tlm2ahb0.hrdata [63:0]  $end
+$var wire   64  amd  u_tb.u_tlm2ahb0.hrdata [63:0]  $end
+$var wire    1  ame  u_tb.u_tlm2ahb0.hready       $end
+$var wire    1  amf  u_tb.u_tlm2ahb0.hready       $end
+$var wire    1  amg  u_tb.u_tlm2ahb0.reset_n       $end
+$var wire    1  amh  u_tb.u_tlm2ahb0.reset_n       $end
+$var wire    1  ami  u_tb.u_tlm2ahb0.clk       $end
+$var wire    1  amj  u_tb.u_tlm2ahb0.clk       $end
+$var wire    1  amk  u_tb.u_tlm2apb.pready       $end
+$var wire    1  aml  u_tb.u_tlm2apb.pready       $end
+$var wire   32  amm  u_tb.u_tlm2apb.prdata [31:0]  $end
+$var wire   32  amn  u_tb.u_tlm2apb.prdata [31:0]  $end
+$var wire   32  amo  u_tb.u_tlm2apb.pwdata [31:0]  $end
+$var wire   32  amp  u_tb.u_tlm2apb.pwdata [31:0]  $end
+$var wire   32  amq  u_tb.u_tlm2apb.paddr [31:0]  $end
+$var wire   32  amr  u_tb.u_tlm2apb.paddr [31:0]  $end
+$var wire    1  ams  u_tb.u_tlm2apb.pwrite       $end
+$var wire    1  amt  u_tb.u_tlm2apb.pwrite       $end
+$var wire    1  amu  u_tb.u_tlm2apb.penable       $end
+$var wire    1  amv  u_tb.u_tlm2apb.penable       $end
+$var wire    1  amw  u_tb.u_tlm2apb.psel       $end
+$var wire    1  amx  u_tb.u_tlm2apb.psel       $end
+$var wire    1  amy  u_tb.u_tlm2apb.clk       $end
+$var wire    1  amz  u_tb.u_tlm2apb.clk       $end
+$var wire    1  ana  u_tb.clk       $end
+$upscope $end
+$enddefinitions  $end
+
