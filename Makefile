@@ -35,7 +35,7 @@ ifeq (${USE_PROF},1)
 CXXFLAGS		+= -fbranch-probabilities
 LDFLAGS			+= -fbranch-probabilities
 endif
-.PHONY:clean runall
+.PHONY:clean test
 
 vpath %.cpp $(SRC_DIRS)
 vpath %.c $(SRC_DIRS)
@@ -51,5 +51,9 @@ vcd_hier_manip:$(OBJS)
 
 clean:
 	rm -f .*.[do] vcd_hier_manip
+	rm -rf test_run
+
+test:
+	for f in $(wildcard tests/*.sh); do ./$$f; done
 
 -include $(addsuffix .d,$(basename $(OBJS)))
